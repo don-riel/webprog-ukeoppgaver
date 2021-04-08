@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webprogrammering</title>
+
+<!--    <script type="application/javascript">-->
+<!--        //ukeoppgave 1-->
+<!--        /*function visHei() {-->
+<!--            alert("Hei verden")-->
+<!--        }-->
+
+<!--        function visInput(input) {-->
+<!--            document.write(input.fontcolor("red"))-->
+
+<!--        }-->
+
+<!--        let antall = 0;-->
+
+<!--        function visAntall() {-->
+<!--            antall++;-->
+<!--            console.log("Du har trykket på knappen " + antall + " ganger bro!")-->
+
+<!--        }*/-->
+
+<!--        //ukeoppgave 2-->
+<!--        //array of persons-->
+<!--        const personList = [];-->
+
+<!--        //constructor of a person object-->
+<!--        function Person(n, addr, tlf) {-->
+<!--            let navn, addresse, telefonnr;-->
+
+<!--            function createPerson() {-->
+<!--                navn = n;-->
+<!--                addresse = addr;-->
+<!--                telefonnr = tlf;-->
+<!--                    return {-->
+<!--                        navn: navn,-->
+<!--                        addr: addresse,-->
+<!--                        tlfn: telefonnr-->
+<!--                    };-->
+
+<!--            }-->
+
+<!--            return createPerson;-->
+<!--        }-->
+
+<!--        //create sample person objects-->
+<!--        const createPer = Person("Per Hansen", "Bærumsveien 32", "12345667");-->
+<!--        let per = createPer();-->
+
+<!--        const createOle = Person("Ole Iversen", "Osloveien 53", "321456778");-->
+<!--        let ole = createOle();-->
+
+<!--        personList.push(per);-->
+<!--        personList.push(ole)-->
+
+<!--        //Person register base string-->
+<!--        let ut = "<table><tr>" +-->
+<!--            "<th>Navn</th><th>Adresse</th><th>Telefonnr</th>" +-->
+<!--            "</tr>";-->
+
+<!--        //create a new person from user inputs-->
+<!--        function leggTil() {-->
+<!--            let promptQuestion = "Please enter your";-->
+<!--            let errorMessage = "Please enter a valid value"-->
+
+<!--            let navn = prompt(promptQuestion + " name")-->
+<!--            if(navn) {-->
+<!--                let address = prompt(promptQuestion + " address")-->
+<!--                if(address) {-->
+<!--                    let tlf = prompt(promptQuestion + " phone number")-->
+
+<!--                    if(tlf) {-->
+<!--                        const createPerson = Person(navn, address, tlf);-->
+<!--                        let person = createPerson()-->
+<!--                        personList.push(person);-->
+<!--                        visPersonRegister();-->
+<!--                    } else {-->
+<!--                        alert(errorMessage)-->
+<!--                    }-->
+<!--                }-->
+<!--                else {-->
+<!--                    alert(errorMessage)-->
+<!--                }-->
+<!--            } else (-->
+<!--                alert(errorMessage)-->
+<!--            )-->
+<!--        }-->
+
+<!--        //diplay person list-->
+<!--        function visPersonRegister() {-->
+<!--            const div = document.getElementById("personRegister");-->
+<!--            let i = 0;-->
+
+<!--            while(i < personList.length) {-->
+<!--                ut += "<table><tr>" +-->
+<!--                    "<th>" + personList[i].navn + "</th><th>" + personList[i].addr +  "</th><th>" + personList[i].tlfn + "</th>" +-->
+<!--                    "</tr>";-->
+<!--               i++;-->
+<!--            }-->
+<!--            div.innerHTML = ut;-->
+<!--        }-->
+
+
+
+<!--    </script>-->
+</head>
+<body>
+    <!--<button onclick="visHei()">Vis Hei</button> <br />
+    <input type="text" onchange="visInput(this.value)"><br />
+    <button onclick="visAntall()">Click</button>-->
+    <h2>Todo Oppgave</h2>
+    <label for="inputTodo">To do</label>
+    <input id="inputTodo" type="text"/>
+    <button onclick="leggTil()">Legg til</button>
+    <div class="container" style="display: flex;">
+        <div class="todoList">
+            Not done
+        </div>
+        <div class="done" style="margin-left: 50px;">
+            Done
+        </div>
+    </div>
+
+    <h2>Quiz Oppgave</h2>
+    <div class="test">
+        <ul id="liste"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
