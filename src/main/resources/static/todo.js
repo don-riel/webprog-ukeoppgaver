@@ -34,4 +34,5 @@ function addTodo(value, parent, id) {
     label.insertAdjacentElement('beforeend', child);
     box.appendChild(label);
     parent.insertAdjacentElement("beforeend", box);
+
 }
