@@ -1,4 +1,5 @@
 const btn = document.getElementById("register");
+const slettAlle = document.getElementById("slett")
 const personnr = document.getElementById("innPersonnr");
 const navn = document.getElementById("innNavn");
 const addresse = document.getElementById("innAddresse");
@@ -10,7 +11,23 @@ btn.addEventListener("click", () => {
     const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
                                         kjennetegn.value, bilmerke.value, biltype.value);
     const nyMotorvogn = lagMotorvogn();
-    console.log(nyMotorvogn)
+    $.post("registrer",nyMotorvogn, function (motorvogner) {
+        if(motorvogner) {
+            for(let motorvogn of motorvogner) {
+                console.log(motorvogn)
+            }
+        }
+    })
+})
+
+slettAlle.addEventListener("click", () => {
+    $.get("slettAlle", (data) => {
+        if (data.length > 0) {
+            console.log(data)
+        } else {
+            console.log("listen er tom")
+        }
+    })
 })
 
 function Motorvogn(innPersonnr, innNavn, innAddresse,
