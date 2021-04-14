@@ -22,4 +22,9 @@ public class MotorvognController {
         liste.clear();
         return liste;
     }
+
+    @GetMapping("hentAlle")
+    public List<Motorvogn> hentAlle () {
+        return liste;
+    }
 }
