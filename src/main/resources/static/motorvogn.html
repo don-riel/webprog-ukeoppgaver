@@ -12,29 +12,29 @@
             <div class="col">
                 <!-- personnr, navn,addr, kjennetegn, bilmerke, biltype -->
                 <label for="innPersonnr">Personnr</label>
-                <div class="form-floating mb-3">
+                <div class="form mb-3">
                     <input id="innPersonnr" type="text" class="form-control">
                 </div>
                 <label for="innNavn">Navn</label>
-                <div class="form-floating mb-3">
+                <div class="form mb-3">
                     <input id="innNavn" type="text" class="form-control">
                 </div>
                 <label for="innAddresse">Addresse</label>
-                <div class="form-floating mb-3">
+                <div class="form mb-3">
                     <input id="innAddresse" type="text" class="form-control">
                 </div>
                 <label for="innKjennetegn">Kjennetegn</label>
-                <div class="form-floating mb-3">
+                <div class="form mb-3">
                     <input id="innKjennetegn" type="text" class="form-control">
                 </div>
-                <label for="innBilmerke">Bilmerke</label>
-                <div class="form-floating mb-3">
-                    <input id="innBilmerke" type="text" class="form-control">
-                </div>
-                <label for="innBiltype">Biltype</label>
-                <div class="form-floating mb-3">
-                    <input id="innBiltype" type="text" class="form-control">
-                </div>
+                <label for="merke">Merke</label>
+                <select id="merke" name="merke" style="display: block; margin-bottom: 2em">
+                    <option value="Volvo">Volvo</option>
+                    <option value="Audi">Audi</option>
+                    <option value="Bmw">BMW</option>
+                </select>
+                <label for="type">Type</label>
+                <select id="type" name="type" style="display: block; margin-bottom: 2em"></select>
                 <button id="register" class="btn btn-success">Register</button>
             </div>
             <div class="col">

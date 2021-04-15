@@ -8,6 +8,8 @@ const bilmerke = document.getElementById("innBilmerke");
 const biltype = document.getElementById("innBiltype");
 const tabel = document.getElementById("tabel");
 const inputs = [personnr, navn, addresse, kjennetegn, bilmerke, biltype];
+const merkeOption = document.getElementById("merke");
+const typeOption = document.getElementById("type");
 
 function Motorvogn(innPersonnr, innNavn, innAddresse,
                    innKjennetegn, innBilmerke, innBiltype) {
@@ -34,11 +36,48 @@ function Motorvogn(innPersonnr, innNavn, innAddresse,
 
 $(function() {
   hentAlle();
+
+    merkeOption.addEventListener("change", (e) => {
+        console.log(typeof e.value)
+        populateTypeOptions(e.target.value)
+        console.log("change")
+    });
+    const valgtMerke = merkeOption.value;
+    populateTypeOptions(valgtMerke);
 })
 
+
+function populateTypeOptions(merke) {
+
+    switch (merke) {
+        case "Volvo":
+            renderType(["V30", "V70", "V90"])
+            break;
+        case "Audi":
+            renderType(["A3", "A5", "A7"])
+            break;
+        case "Bmw":
+            renderType(["M1", "M3", "M5"])
+            break;
+        default:
+            break;
+    }
+}
+
+function renderType(typer) {
+    console.log(typer)
+    typeOption.innerHTML = "";
+    for(let type of typer) {
+        let newType = document.createElement("option");
+        newType.setAttribute("value", type);
+        newType.text = type;
+        typeOption.appendChild(newType)
+    }
+
+}
 btn.addEventListener("click", () => {
     const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
-                                        kjennetegn.value, bilmerke.value, biltype.value);
+                                        kjennetegn.value, merkeOption.value, typeOption.value);
     const nyMotorvogn = lagMotorvogn();
     $.post("registrer",nyMotorvogn, function (data) {
         if(data) {
