@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,22 +10,26 @@ import java.util.List;
 
 @RestController
 public class MotorvognController {
-    private final List<Motorvogn> liste = new ArrayList<>();
+
+    @Autowired
+    private MotorvognRepository rep;
 
     @PostMapping("/registrer")
-    public List<Motorvogn> registrer (Motorvogn motorvogn) {
-        liste.add(motorvogn);
-        return liste;
+    public boolean registrer (Motorvogn motorvogn) {
+       return rep.registrerMotorvogn(motorvogn);
     }
 
     @GetMapping("slettAlle")
-    public List<Motorvogn> slettAlle () {
-        liste.clear();
-        return liste;
+    public boolean slettAlle () {
+        return rep.slettAlleVogner();
     }
 
     @GetMapping("hentAlle")
     public List<Motorvogn> hentAlle () {
-        return liste;
+        List<Motorvogn> liste = rep.hentAlleMotorvogn();
+        if(liste != null) {
+            return liste;
+        }
+        return null;
     }
 }

@@ -12,6 +12,8 @@ public class Motorvogn {
         this.biltype = biltype;
     }
 
+    public Motorvogn() {}
+
     public String getPersonnr() {
         return personnr;
     }

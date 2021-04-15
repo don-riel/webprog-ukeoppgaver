@@ -40,10 +40,9 @@ btn.addEventListener("click", () => {
     const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
                                         kjennetegn.value, bilmerke.value, biltype.value);
     const nyMotorvogn = lagMotorvogn();
-    $.post("registrer",nyMotorvogn, function (motorvogner) {
-        console.log(motorvogner)
-        if(motorvogner) {
-            visMotorvognListe(motorvogner)
+    $.post("registrer",nyMotorvogn, function (data) {
+        if(data) {
+            hentAlle();
         }
         for(let inp of inputs) {
             inp.value =""
@@ -54,12 +53,17 @@ btn.addEventListener("click", () => {
 slettAlle.addEventListener("click", () => {
     $.get("slettAlle", (data) => {
         tabel.innerHTML = "";
-        visMotorvognListe(data)
+        if(data) {
+            visMotorvognListe(data)
+        } else {
+            alert("Noe gikk galt!")
+        }
     })
 })
 
 function hentAlle () {
     $.get("hentAlle", (data) => {
+        console.log(data)
         visMotorvognListe(data)
     })
 }
