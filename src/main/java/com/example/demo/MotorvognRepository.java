@@ -19,7 +19,6 @@ public class MotorvognRepository {
             db.update(sql, vogn.getPersonnr(), vogn.getNavn(), vogn.getAddresse(), vogn.getKjennetegn(), vogn.getBilmerke(), vogn.getBiltype());
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -29,8 +28,24 @@ public class MotorvognRepository {
         try {
             return db.query(sql, new BeanPropertyRowMapper(Motorvogn.class));
         } catch (Exception e) {
-            System.out.println(e);
             return null;
+        }
+    }
+
+    public Motorvogn hentVogn(String personnr) {
+        String sql = "SELECT * FROM Motorvogn WHERE personnr = ?";
+        List<Motorvogn> motorvogn = db.query(sql,new BeanPropertyRowMapper(Motorvogn.class), personnr);
+        return motorvogn.get(0);
+    }
+
+    public boolean endreVogn(Motorvogn vogn) {
+        String sql = "UPDATE Motorvogn SET personnr=?, navn=?, addresse=?, kjennetegn=?, bilmerke=?, biltype=?";
+        try {
+            db.update(sql, vogn.getPersonnr(), vogn.getNavn(), vogn.getAddresse(),
+                    vogn.getKjennetegn(), vogn.getBilmerke(), vogn.getBiltype());
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -43,4 +58,15 @@ public class MotorvognRepository {
             return false;
         }
     }
+
+    public boolean slettEnVogn(String personnr) {
+        String sql = "DELETE FROM Motorvogn WHERE personnr=?";
+        try {
+            db.update(sql, personnr);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

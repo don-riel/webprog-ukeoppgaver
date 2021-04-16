@@ -132,6 +132,24 @@ function formaterMotorvognString (motorvogn) {
         "<th>" + motorvogn.personnr + "</th><th>" +motorvogn.navn + "</th><th>"
         + motorvogn.addresse + "</th><th>" + motorvogn.kjennetegn + "</th><th>" +
         motorvogn.bilmerke + "</th><th>" + motorvogn.biltype + "</th>";
+    let endreBtn = document.createElement("button");
+    endreBtn.textContent = "Endre";
+    endreBtn.classList.add("btn", "btn-primary")
+    endreBtn.addEventListener("click", () => {
+       $.post("endreVogn", motorvogn, (data) => {
+           console.log(data)
+       })
+    })
+    let slettBtn = document.createElement("button");
+    slettBtn.textContent = "Slett";
+    slettBtn.classList.add("btn", "btn-danger")
+    slettBtn.addEventListener("click", () => {
+        $.post("slettEtVogn", motorvogn, (data) => {
+            hentAlle();
+        })
+    })
     newNode.innerHTML = str;
+    newNode.appendChild(endreBtn)
+    newNode.appendChild(slettBtn)
     return newNode;
 }

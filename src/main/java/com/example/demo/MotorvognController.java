@@ -27,9 +27,18 @@ public class MotorvognController {
     @GetMapping("hentAlle")
     public List<Motorvogn> hentAlle () {
         List<Motorvogn> liste = rep.hentAlleMotorvogn();
-        if(liste != null) {
-            return liste;
-        }
-        return null;
+        return liste;
+    }
+
+    @PostMapping("endreVogn")
+    public boolean endreVogn (Motorvogn vogn) {
+        System.out.println(vogn.getPersonnr());
+        Motorvogn selected  = rep.hentVogn(vogn.getPersonnr());
+        return rep.endreVogn(selected);
+    }
+
+    @PostMapping("slettEtVogn")
+    public boolean slettVogn(Motorvogn vogn) {
+       return rep.slettEnVogn(vogn.getPersonnr());
     }
 }
