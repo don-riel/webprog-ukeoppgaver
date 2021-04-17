@@ -32,9 +32,7 @@ public class MotorvognController {
 
     @PostMapping("endreVogn")
     public boolean endreVogn (Motorvogn vogn) {
-        System.out.println(vogn.getPersonnr());
-        Motorvogn selected  = rep.hentVogn(vogn.getPersonnr());
-        return rep.endreVogn(selected);
+        return rep.endreVogn(vogn);
     }
 
     @PostMapping("slettEtVogn")

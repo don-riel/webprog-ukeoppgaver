@@ -4,12 +4,12 @@ const personnr = document.getElementById("innPersonnr");
 const navn = document.getElementById("innNavn");
 const addresse = document.getElementById("innAddresse");
 const kjennetegn = document.getElementById("innKjennetegn");
-const bilmerke = document.getElementById("innBilmerke");
-const biltype = document.getElementById("innBiltype");
 const tabel = document.getElementById("tabel");
-const inputs = [personnr, navn, addresse, kjennetegn, bilmerke, biltype];
+const inputs = [personnr, navn, addresse, kjennetegn ];
 const merkeOption = document.getElementById("merke");
 const typeOption = document.getElementById("type");
+
+let postState = "Register";
 
 function Motorvogn(innPersonnr, innNavn, innAddresse,
                    innKjennetegn, innBilmerke, innBiltype) {
@@ -35,6 +35,7 @@ function Motorvogn(innPersonnr, innNavn, innAddresse,
 }
 
 $(function() {
+    initRegisterBtn();
   hentAlle();
 
     merkeOption.addEventListener("change", (e) => {
@@ -48,7 +49,6 @@ $(function() {
 
 
 function populateTypeOptions(merke) {
-
     switch (merke) {
         case "Volvo":
             renderType(["V30", "V70", "V90"])
@@ -65,7 +65,6 @@ function populateTypeOptions(merke) {
 }
 
 function renderType(typer) {
-    console.log(typer)
     typeOption.innerHTML = "";
     for(let type of typer) {
         let newType = document.createElement("option");
@@ -75,19 +74,35 @@ function renderType(typer) {
     }
 
 }
-btn.addEventListener("click", () => {
-    const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
-                                        kjennetegn.value, merkeOption.value, typeOption.value);
-    const nyMotorvogn = lagMotorvogn();
-    $.post("registrer",nyMotorvogn, function (data) {
-        if(data) {
-            hentAlle();
-        }
-        for(let inp of inputs) {
-            inp.value =""
+function initRegisterBtn () {
+    btn.addEventListener("click", () => {
+        const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
+            kjennetegn.value, merkeOption.value, typeOption.value);
+        const nyMotorvogn = lagMotorvogn();
+        if(postState === "Register") {
+            $.post("registrer",nyMotorvogn, function (data) {
+                if(data) {
+                    hentAlle();
+                }
+                for(let inp of inputs) {
+                    inp.value =""
+                }
+            })
+        } else {
+            $.post("endreVogn", nyMotorvogn, (data) => {
+                if(data) {
+                    hentAlle();
+                    postState = "Register";
+                    btn.innerText = postState;
+                }
+                for(let inp of inputs) {
+                    inp.value =""
+                }
+            })
+
         }
     })
-})
+}
 
 slettAlle.addEventListener("click", () => {
     $.get("slettAlle", (data) => {
@@ -102,7 +117,6 @@ slettAlle.addEventListener("click", () => {
 
 function hentAlle () {
     $.get("hentAlle", (data) => {
-        console.log(data)
         visMotorvognListe(data)
     })
 }
@@ -136,9 +150,7 @@ function formaterMotorvognString (motorvogn) {
     endreBtn.textContent = "Endre";
     endreBtn.classList.add("btn", "btn-primary")
     endreBtn.addEventListener("click", () => {
-       $.post("endreVogn", motorvogn, (data) => {
-           console.log(data)
-       })
+        getEndreInfo(motorvogn)
     })
     let slettBtn = document.createElement("button");
     slettBtn.textContent = "Slett";
@@ -152,4 +164,16 @@ function formaterMotorvognString (motorvogn) {
     newNode.appendChild(endreBtn)
     newNode.appendChild(slettBtn)
     return newNode;
+}
+
+function getEndreInfo(motorvogn) {
+    postState = "Endre";
+    btn.innerText = postState;
+    personnr.value = motorvogn.personnr;
+    navn.value = motorvogn.navn;
+    addresse.value = motorvogn.addresse;
+    kjennetegn.value = motorvogn.kjennetegn;
+    merkeOption.value = motorvogn.bilmerke;
+    populateTypeOptions(merkeOption.value);
+    typeOption.value = motorvogn.biltype;
 }

@@ -39,10 +39,10 @@ public class MotorvognRepository {
     }
 
     public boolean endreVogn(Motorvogn vogn) {
-        String sql = "UPDATE Motorvogn SET personnr=?, navn=?, addresse=?, kjennetegn=?, bilmerke=?, biltype=?";
+        String sql = "UPDATE Motorvogn SET personnr=?, navn=?, addresse=?, kjennetegn=?, bilmerke=?, biltype=? WHERE personnr=?";
         try {
             db.update(sql, vogn.getPersonnr(), vogn.getNavn(), vogn.getAddresse(),
-                    vogn.getKjennetegn(), vogn.getBilmerke(), vogn.getBiltype());
+                    vogn.getKjennetegn(), vogn.getBilmerke(), vogn.getBiltype(),vogn.getPersonnr());
             return true;
         } catch (Exception e) {
             return false;
