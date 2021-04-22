@@ -8,6 +8,7 @@ const tabel = document.getElementById("tabel");
 const inputs = [personnr, navn, addresse, kjennetegn ];
 const merkeOption = document.getElementById("merke");
 const typeOption = document.getElementById("type");
+const errSpans = document.querySelectorAll(".errSpan");
 
 let postState = "Register";
 
@@ -36,7 +37,7 @@ function Motorvogn(innPersonnr, innNavn, innAddresse,
 
 $(function() {
     initRegisterBtn();
-  hentAlle();
+    hentAlle();
 
     merkeOption.addEventListener("change", (e) => {
         console.log(typeof e.value)
@@ -76,32 +77,60 @@ function renderType(typer) {
 }
 function initRegisterBtn () {
     btn.addEventListener("click", () => {
-        const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
-            kjennetegn.value, merkeOption.value, typeOption.value);
-        const nyMotorvogn = lagMotorvogn();
-        if(postState === "Register") {
-            $.post("registrer",nyMotorvogn, function (data) {
-                if(data) {
-                    hentAlle();
-                }
-                for(let inp of inputs) {
-                    inp.value =""
-                }
-            })
+        emptyErrorSpans();
+        let invalidInputs = validerInputs(inputs);
+        if (invalidInputs.length) {
+            showInvalidInputErrors(invalidInputs);
         } else {
-            $.post("endreVogn", nyMotorvogn, (data) => {
-                if(data) {
-                    hentAlle();
-                    postState = "Register";
-                    btn.innerText = postState;
-                }
-                for(let inp of inputs) {
-                    inp.value =""
-                }
-            })
+            const lagMotorvogn = Motorvogn(personnr.value, navn.value, addresse.value,
+                kjennetegn.value, merkeOption.value, typeOption.value);
+            const nyMotorvogn = lagMotorvogn();
+            if(postState === "Register") {
+                $.post("registrer",nyMotorvogn, function (data) {
+                    if(data) {
+                        hentAlle();
+                    }
+                    for(let inp of inputs) {
+                        inp.value =""
+                    }
+                })
+            } else {
+                $.post("endreVogn", nyMotorvogn, (data) => {
+                    if(data) {
+                        hentAlle();
+                        postState = "Register";
+                        btn.innerText = postState;
+                    }
+                    for(let inp of inputs) {
+                        inp.value =""
+                    }
+                })
 
+            }
         }
     })
+}
+
+let charLengthLimit = {
+    personnummer: 11,
+    navn: 30,
+    addresse: 60,
+    kjennetegn: 7
+}
+function showInvalidInputErrors(invalidInputs) {
+    let errSpan = "";
+   for (let invalidInput of invalidInputs) {
+       let selector = "#err" + invalidInput.name;
+       errSpan = document.querySelector(selector);
+       errSpan.innerHTML = invalidInput.name + " må bestå av 2 til " + charLengthLimit[invalidInput.name.toLowerCase()] + " bokstaver!"
+   }
+
+}
+
+function emptyErrorSpans () {
+    for(let span of errSpans) {
+        span.innerHTML = "";
+    }
 }
 
 slettAlle.addEventListener("click", () => {

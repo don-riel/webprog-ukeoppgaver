@@ -13,20 +13,24 @@
                 <!-- personnr, navn,addr, kjennetegn, bilmerke, biltype -->
                 <label for="innPersonnr">Personnr</label>
                 <div class="form mb-3">
-                    <input id="innPersonnr" type="text" class="form-control">
+                    <input id="innPersonnr" type="text" name="Personnummer" class="form-control">
                 </div>
+                <span id="errPersonnummer" class="errSpan" style="display: block; margin-bottom: 1em; color: red;"></span>
                 <label for="innNavn">Navn</label>
                 <div class="form mb-3">
-                    <input id="innNavn" type="text" class="form-control">
+                    <input id="innNavn" type="text" name="Navn" class="form-control">
                 </div>
+                <span id="errNavn" class="errSpan" style="display: block; margin-bottom: 1em; color: red;"></span>
                 <label for="innAddresse">Addresse</label>
                 <div class="form mb-3">
-                    <input id="innAddresse" type="text" class="form-control">
+                    <input id="innAddresse" type="text" name="Addresse" class="form-control">
                 </div>
+                <span id="errAddresse" class="errSpan" style="display: block;  margin-bottom: 1em; color: red;"></span>
                 <label for="innKjennetegn">Kjennetegn</label>
                 <div class="form mb-3">
-                    <input id="innKjennetegn" type="text" class="form-control">
+                    <input id="innKjennetegn" type="text" name="Kjennetegn" class="form-control">
                 </div>
+                <span id="errKjennetegn" class="errSpan" style="display: block; margin-bottom: 1em; color: red;"></span>
                 <label for="merke">Merke</label>
                 <select id="merke" name="merke" style="display: block; margin-bottom: 2em">
                     <option value="Volvo">Volvo</option>
@@ -49,5 +53,6 @@
 
     <script src="//code.jquery.com/jquery-3.4.1.js"></script>
     <script src="motorvogn.js"></script>
+    <script src="validering.js"></script>
 </body>
 </html>
