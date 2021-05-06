@@ -9,3 +9,9 @@ CREATE TABLE Motorvogn
     biltype VARCHAR (255) NOT NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE User
+(
+    brukernavn VARCHAR(255) UNIQUE NOT NULL,
+    passord   VARCHAR(255) NOT NULL
+);

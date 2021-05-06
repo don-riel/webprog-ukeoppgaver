@@ -9,8 +9,16 @@ const inputs = [personnr, navn, addresse, kjennetegn ];
 const merkeOption = document.getElementById("merke");
 const typeOption = document.getElementById("type");
 const errSpans = document.querySelectorAll(".errSpan");
+const reg_motorvogn = document.getElementById("reg_motorvogn");
+const reg_bruker = document.getElementById("reg_bruker");
+const regBrukerBtn = document.getElementById("register_bruker");
+const loggInnBtn = document.getElementById("loggeinn");
+const loggUtBtn = document.getElementById("loggut");
+const brukernavnInput = document.getElementById("brukernavn");
+const passordInput = document.getElementById("passord");
 
 let postState = "Register";
+let loggetinn = false;
 
 function Motorvogn(innPersonnr, innNavn, innAddresse,
                    innKjennetegn, innBilmerke, innBiltype) {
@@ -36,9 +44,14 @@ function Motorvogn(innPersonnr, innNavn, innAddresse,
 }
 
 $(function() {
-    initRegisterBtn();
+    initRegisterVognBtn();
+    initRegBrukerBtn();
+    initLoggInnBtn();
+    initLoggUtBtn();
     hentAlle();
+    updateGui();
 
+    //Merke options. Type oppdaters etter valgt merke
     merkeOption.addEventListener("change", (e) => {
         console.log(typeof e.value)
         populateTypeOptions(e.target.value)
@@ -48,6 +61,23 @@ $(function() {
     populateTypeOptions(valgtMerke);
 })
 
+function updateGui() {
+    toggleMotorvogReg();
+    toggleBrukerREg();
+    hentAlle();
+}
+
+function toggleLoggetInn() {
+    loggetinn = !loggetinn
+}
+
+function toggleMotorvogReg() {
+    reg_motorvogn.style.display = loggetinn ? 'block' : 'none';
+}
+
+function toggleBrukerREg() {
+    reg_bruker.style.display = loggetinn ? 'none' : 'block';
+}
 
 function populateTypeOptions(merke) {
     switch (merke) {
@@ -75,7 +105,7 @@ function renderType(typer) {
     }
 
 }
-function initRegisterBtn () {
+function initRegisterVognBtn () {
     btn.addEventListener("click", () => {
         emptyErrorSpans();
         let invalidInputs = validerInputs(inputs);
@@ -90,6 +120,9 @@ function initRegisterBtn () {
                     if(data) {
                         hentAlle();
                     }
+                    else {
+                        alert("Ikke logget inn");
+                    }
                     for(let inp of inputs) {
                         inp.value =""
                     }
@@ -101,6 +134,9 @@ function initRegisterBtn () {
                         postState = "Register";
                         btn.innerText = postState;
                     }
+                    else {
+                        alert("Ikke logget inn");
+                    }
                     for(let inp of inputs) {
                         inp.value =""
                     }
@@ -108,6 +144,65 @@ function initRegisterBtn () {
 
             }
         }
+    })
+}
+
+function initRegBrukerBtn () {
+    regBrukerBtn.addEventListener("click", () => {
+        let brukernavn;
+        let passord;
+        if (brukernavnInput.value && passordInput.value) {
+            brukernavn = brukernavnInput.value;
+            passord = passordInput.value;
+
+            $.post("registrerUser", {brukernavn,passord}, (data) => {
+                if (data) {
+                    toggleLoggetInn();
+                    updateGui();
+                }
+            })
+        }
+        else {
+            alert("Ma fylle brukernavn og passord")
+        }
+    })
+}
+
+function initLoggInnBtn() {
+    loggInnBtn.addEventListener("click", () => {
+        let brukernavn;
+        let passord;
+        if (brukernavnInput.value && passordInput.value) {
+            brukernavn = brukernavnInput.value;
+            passord = passordInput.value;
+
+            $.get("loggeInn", {brukernavn,passord}, (data) => {
+                if (data) {
+                    toggleLoggetInn();
+                    updateGui();
+                }
+                else {
+                    alert("Bruker ikke funnet!")
+                }
+            })
+        }
+        else {
+            alert("Ma fylle brukernavn og passord")
+        }
+    })
+}
+
+function initLoggUtBtn() {
+    loggUtBtn.addEventListener("click", () => {
+        $.get("loggUt", (data) => {
+            if (data) {
+                toggleLoggetInn();
+                updateGui();
+            }
+            else {
+                alert("Something went wrong")
+            }
+        })
     })
 }
 
@@ -124,7 +219,6 @@ function showInvalidInputErrors(invalidInputs) {
        errSpan = document.querySelector(selector);
        errSpan.innerHTML = invalidInput.name + " må bestå av 2 til " + charLengthLimit[invalidInput.name.toLowerCase()] + " bokstaver!"
    }
-
 }
 
 function emptyErrorSpans () {
@@ -135,11 +229,11 @@ function emptyErrorSpans () {
 
 slettAlle.addEventListener("click", () => {
     $.get("slettAlle", (data) => {
-        tabel.innerHTML = "";
         if(data) {
+            tabel.innerHTML = "";
             visMotorvognListe(data)
         } else {
-            alert("Noe gikk galt!")
+            alert("Ikke logget inn");
         }
     })
 })
@@ -155,7 +249,7 @@ function visMotorvognListe(liste) {
     if(liste.length) {
         visTableTitler();
         for (let vogn of liste) {
-            tabel.appendChild(formaterMotorvognString(vogn))
+            tabel.appendChild(formaterMotorvognString(vogn, loggetinn))
         }
     }
 }
@@ -175,23 +269,33 @@ function formaterMotorvognString (motorvogn) {
         "<th>" + motorvogn.personnr + "</th><th>" +motorvogn.navn + "</th><th>"
         + motorvogn.addresse + "</th><th>" + motorvogn.kjennetegn + "</th><th>" +
         motorvogn.bilmerke + "</th><th>" + motorvogn.biltype + "</th>";
-    let endreBtn = document.createElement("button");
-    endreBtn.textContent = "Endre";
-    endreBtn.classList.add("btn", "btn-primary")
-    endreBtn.addEventListener("click", () => {
-        getEndreInfo(motorvogn)
-    })
-    let slettBtn = document.createElement("button");
-    slettBtn.textContent = "Slett";
-    slettBtn.classList.add("btn", "btn-danger")
-    slettBtn.addEventListener("click", () => {
-        $.post("slettEtVogn", motorvogn, (data) => {
-            hentAlle();
+
+        let endreBtn = document.createElement("button");
+        endreBtn.textContent = "Endre";
+        endreBtn.classList.add("btn", "btn-primary")
+        endreBtn.addEventListener("click", () => {
+            if (loggetinn) {
+                getEndreInfo(motorvogn)
+            }
+            else {
+                alert("Ikke logget inn");
+            }
         })
-    })
-    newNode.innerHTML = str;
-    newNode.appendChild(endreBtn)
-    newNode.appendChild(slettBtn)
+        let slettBtn = document.createElement("button");
+        slettBtn.textContent = "Slett";
+        slettBtn.classList.add("btn", "btn-danger")
+        slettBtn.addEventListener("click", () => {
+            $.post("slettEtVogn", motorvogn, (data) => {
+                if (!data) {
+                    alert("Ikke logget inn");
+                }
+                hentAlle();
+            })
+        })
+        newNode.innerHTML = str;
+        newNode.appendChild(endreBtn)
+        newNode.appendChild(slettBtn)
+
     return newNode;
 }
 

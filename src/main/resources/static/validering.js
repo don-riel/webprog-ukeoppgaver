@@ -16,11 +16,11 @@ function createRegex (type) {
        case 'Navn':
             return /^[a-zA-ZåæøÅÆØ. \-]{2,30}$/;
        case 'Personnummer':
-             return /^[a-zA-ZåæøÅÆØ. \-]{2,10}$/
+             return /^[a-zA-ZåæøÅÆØ.0-9 \-]{2,11}$/
        case 'Addresse':
-            return /^[a-zA-ZåæøÅÆØ. \-]{2,60}$/;
+            return /^[a-zA-ZåæøÅÆØ.0-9 \-]{2,60}$/;
        case 'Kjennetegn':
-            return /^[a-zA-ZåæøÅÆØ. \-]{2,11}$/;
+            return /^[a-zA-ZåæøÅÆØ.0-9 \-]{2,11}$/;
        default:
            break;
    }

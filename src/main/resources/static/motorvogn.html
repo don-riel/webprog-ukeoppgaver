@@ -9,7 +9,7 @@
     <h1>Motorvogn Register</h1>
     <div class="container-sm">
         <div class="row">
-            <div class="col-3">
+            <div id="reg_motorvogn" class="col-3">
                 <!-- personnr, navn,addr, kjennetegn, bilmerke, biltype -->
                 <label for="innPersonnr">Personnr</label>
                 <div class="form mb-3">
@@ -40,6 +40,15 @@
                 <label for="type">Type</label>
                 <select id="type" name="type" style="display: block; margin-bottom: 2em"></select>
                 <button id="register" class="btn btn-success">Register</button>
+                <button id="loggut" class="btn btn-danger">Logg ut</button>
+            </div>
+            <div id="reg_bruker" class="col-3">
+                <label for="brukernavn">Brukernavn</label>
+                <input id="brukernavn" type="text" name="Kjennetegn" class="form-control">
+                <label for="passord">Passord</label>
+                <input id="passord" type="text" name="Kjennetegn" class="form-control">
+                <button id="register_bruker" class="btn btn-success">Register</button>
+                <button id="loggeinn" class="btn btn-success">Logg inn</button>
             </div>
             <div class="col-sm-9">
                 Alle bilene:
@@ -47,10 +56,8 @@
                 <button id="slett" class="btn btn-danger">Slett alle</button>
             </div>
         </div>
+
     </div>
-    <div class="endreInputs"></div>
-
-
     <script src="//code.jquery.com/jquery-3.4.1.js"></script>
     <script src="motorvogn.js"></script>
     <script src="validering.js"></script>
